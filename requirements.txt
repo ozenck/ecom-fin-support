@@ -8,3 +8,4 @@ PyJWT==2.8.0
 sqlparse==0.4.4
 typing_extensions==4.10.0
 tzdata==2024.1
+coverage==7.4.4

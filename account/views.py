@@ -74,8 +74,6 @@ class UserView(APIView):
     def patch(self, request, *args, **kwargs):
         email = request.data.get('email', None)
         user = User.objects.filter(email=email).first()
-        if user is None:
-            return Response({'error': 'User not found.'}, status=status.HTTP_204_NO_CONTENT)
 
         serializer = UserUpdateSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():

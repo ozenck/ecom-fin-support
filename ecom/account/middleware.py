@@ -17,7 +17,6 @@ def validate_access_token(token, request_data):
     request_email = request_data.get("email")
     if request_email is None:
         return None, JsonResponse({"error": "email parameter should be exist in request body"}, status=400)
-        # return None, "email parameter should be exist in request body"
     elif request_email != user.email:
         return None, JsonResponse({"error": "Token and user doesn't match"}, status=400)
     return user, ""
@@ -50,8 +49,8 @@ class TokenAuthenticationMiddleware(MiddlewareMixin):
                 return JsonResponse({"error": ex.detail}, status=401)
             except jwt.ExpiredSignatureError:
                 raise AuthenticationFailed('Unauthenticated!')
-            except jwt.exceptions.DecodeError:
-                raise AuthenticationFailed('Authorization token is required!')
+            except jwt.DecodeError:
+                return JsonResponse({"error": "Authorization token is required"}, status=401)
             user, error_response = validate_access_token(token, json.loads(request.body))
             if not user:
                 return error_response
