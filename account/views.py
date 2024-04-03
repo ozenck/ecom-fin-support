@@ -7,6 +7,7 @@ from rest_framework import status
 from .models import User
 from .serializers import UserSerializer, UserUpdateSerializer
 from rest_framework.exceptions import AuthenticationFailed
+from django.forms.models import model_to_dict
 import jwt
 
 
@@ -82,6 +83,11 @@ class UserView(APIView):
             return Response("Başvurunuz Tamamlandı")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class UsersView(APIView):
+    def get(self, request):
+        users = User.objects.all()
+        users_dict = [model_to_dict(user) for user in users]
+        return Response(users_dict, status=status.HTTP_200_OK)
 
 class LogoutView(APIView):
     def post(self, request):
